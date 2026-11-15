@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Pagina so para os testadores: fora do menu e do sitemap, e fora do Google. -->
+<meta name="robots" content="noindex, nofollow">
+<title>2ª fase de testes — CheckupPessoal</title>
+<meta name="description" content="Guia dos testadores do CheckupPessoal: como atualizar para a versão 1.9.10, a nova tela inicial e como dar retorno.">
+<link rel="icon" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0E17;--surface:#131A2B;--border:#2A3450;--primary:#00E5A0;--teal:#00E5CC;--amber:#FFB84D;--red:#FF4D6A;--purple:#B44FFF;--blue:#00BFFF;--text:#E8ECF4;--muted:#8B95A8;--body:#C9D1DE}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,'Segoe UI',sans-serif;font-size:18px;line-height:1.65;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:'Poppins',sans-serif;line-height:1.25;letter-spacing:-.02em}
+a{color:var(--primary)}
+img{max-width:100%;display:block}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px}
+header{border-bottom:1px solid var(--border);background:rgba(10,14,23,.92);position:sticky;top:0;z-index:10;backdrop-filter:blur(8px)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+.brand{display:flex;align-items:center;gap:12px;font-family:'Poppins';font-weight:700;font-size:19px;text-decoration:none;color:var(--text)}
+.brand img{width:38px;height:38px;border-radius:11px}
+.brand i{color:var(--primary);font-style:normal}
+.pdf-top{color:var(--muted);font-size:15px;text-decoration:none;white-space:nowrap}
+.pdf-top:hover{color:var(--primary)}
+
+.hero{padding:56px 0 40px;display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center}
+.kicker{color:var(--teal);font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+h1{font-size:clamp(34px,6vw,54px);margin:12px 0 16px}
+.lead{color:var(--body);font-size:19px}
+.pill{display:inline-block;margin-top:22px;padding:7px 15px;border-radius:999px;font-size:14px;font-weight:600;color:var(--teal);background:rgba(0,229,204,.1);border:1px solid rgba(0,229,204,.35)}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 20px;border-radius:12px;font-weight:600;font-size:16px;text-decoration:none}
+.btn-primary{background:var(--primary);color:#06281d}
+.btn-ghost{border:1px solid var(--border);color:var(--text)}
+.btn-ghost:hover{border-color:var(--primary)}
+
+.phone{border-radius:24px;border:5px solid #222a3d;box-shadow:0 18px 50px rgba(0,0,0,.55);width:100%;max-width:300px;margin:0 auto}
+.phones{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.phones .phone{max-width:260px}
+
+section.blk{padding:46px 0;border-top:1px solid var(--border)}
+h2{font-size:clamp(26px,4vw,34px);margin:10px 0 18px}
+p{color:var(--body);margin-bottom:14px}
+strong{color:var(--text)}
+.teal{color:var(--teal)}.amber{color:var(--amber)}.red{color:var(--red)}
+
+.timeline{list-style:none;margin:26px 0 8px;border-left:2px solid var(--border);padding-left:24px}
+.timeline li{position:relative;margin-bottom:20px;color:var(--body)}
+.timeline li::before{content:"";position:absolute;left:-32px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--teal)}
+.timeline li.warn::before{background:var(--amber)}
+.timeline li.now::before{background:var(--primary);box-shadow:0 0 0 5px rgba(0,229,160,.2)}
+.timeline b{display:block;color:var(--teal);font-size:15px}
+.timeline li.warn b{color:var(--amber)}.timeline li.now b{color:var(--primary)}
+.quote{border-left:4px solid var(--amber);padding:6px 0 6px 20px;margin-top:22px;font-size:20px;color:var(--text)}
+
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px 22px}
+.card .ico{font-size:30px}
+.card h3{font-size:19px;margin:10px 0 6px}
+.card p{font-size:16px;margin:0}
+
+.steps{list-style:none;counter-reset:s;margin-top:18px}
+.steps li{counter-increment:s;position:relative;padding-left:52px;margin-bottom:18px;color:var(--body)}
+.steps li::before{content:counter(s);position:absolute;left:0;top:-2px;width:36px;height:36px;border-radius:50%;background:var(--teal);color:#06281d;font-weight:700;display:flex;align-items:center;justify-content:center}
+.link{font-family:Consolas,monospace;font-size:16px;word-break:break-all;background:#0d1322;border:1px dashed rgba(0,229,204,.5);border-radius:10px;padding:12px 14px;display:block;margin:10px 0;color:var(--teal);text-decoration:none}
+.box{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--primary);border-radius:0 14px 14px 0;padding:20px 22px;margin:24px 0}
+.box p:last-child{margin-bottom:0}
+.aviso{background:rgba(255,184,77,.07);border:1px solid rgba(255,184,77,.35);border-radius:14px;padding:20px 22px;margin:24px 0}
+
+.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:22px}
+.tab{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px}
+.tab .ico{font-size:26px}
+.tab h3{font-size:18px;margin:8px 0 4px}
+.tab p{font-size:14.5px;color:var(--muted);margin:0;line-height:1.5}
+
+.feature{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center}
+.feature ul{list-style:none;margin-top:8px}
+.feature li{position:relative;padding-left:24px;margin-bottom:12px;color:var(--body)}
+.feature li::before{content:"●";position:absolute;left:0;top:1px;color:var(--teal);font-size:13px}
+.q{font-family:'Poppins';font-weight:600;font-size:20px}
+
+footer{border-top:1px solid var(--border);background:var(--surface);padding:34px 0;color:var(--muted);font-size:15px;margin-top:30px}
+.foot-in{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer a{color:var(--muted);text-decoration:none;margin-left:20px}
+footer a:hover{color:var(--primary)}
+
+@media (max-width:820px){
+  .hero{grid-template-columns:1fr;padding-top:36px}
+  .hero .phone{max-width:230px}
+  .cards{grid-template-columns:1fr}
+  .tabs{grid-template-columns:1fr 1fr}
+  .tabs .tab:last-child{grid-column:1/-1}
+  .feature{grid-template-columns:1fr;gap:24px}
+  .feature.rev .media{order:2}
+}
+@media (max-width:420px){
+  body{font-size:17px}
+  .phones{gap:10px}
+  .pdf-top span{display:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="index.html" class="brand"><img src="assets/img/logo.png" alt=""><span>Checkup<i>Pessoal</i></span></a>
+    <a href="assets/CheckupPessoal-2a-fase-de-testes.pdf" class="pdf-top" download>⬇ PDF<span> da apresentação</span></a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="hero">
+    <div>
+      <div class="kicker">Para os testadores · versão 1.9.10</div>
+      <h1>2ª fase de testes</h1>
+      <p class="lead">O que aconteceu na 1ª fase, o que mudou no aplicativo e como você pode ajudar a levá-lo à Play Store.</p>
+      <span class="pill">14 dias · uso real · seu retorno</span>
+      <div class="btns">
+        <a class="btn btn-primary" href="#atualizar">Como atualizar</a>
+        <a class="btn btn-ghost" href="assets/CheckupPessoal-2a-fase-de-testes.pdf" download>⬇ Baixar em PDF</a>
+      </div>
+    </div>
+    <img class="phone" src="assets/img/app-01-controle.jpeg" alt="Tela Controle do CheckupPessoal 1.9.10">
+  </div>
+
+  <section class="blk">
+    <div class="kicker">Onde estamos</div>
+    <h2>A 1ª fase, e o que o Google respondeu</h2>
+    <ul class="timeline">
+      <li><b>Setembro</b>Convite aos cadastrados. Mais de 12 pessoas instalaram pela Play Store.</li>
+      <li><b>Setembro → outubro</b>14 dias de teste fechado, com duas atualizações no período (1.9.7 e 1.9.8).</li>
+      <li><b>2 de outubro</b>Pedido de liberação para a Play Store.</li>
+      <li class="warn"><b>5 de outubro</b>Resposta do Google: <strong>ainda não</strong>. Mais 14 dias de teste.</li>
+      <li class="now"><b>Agora</b>Versão 1.9.10 no ar para os testadores. Começa a 2ª fase.</li>
+    </ul>
+    <p class="quote">O Google não quer só ver o aplicativo <strong>instalado</strong>. Quer ver que as pessoas
+      <strong class="amber">usam de verdade e dão retorno</strong>, e que o aplicativo
+      <strong class="amber">melhora com esse retorno</strong>.</p>
+  </section>
+
+  <section class="blk">
+    <div class="kicker">O que eu peço</div>
+    <h2>Usar por 14 dias e me contar o que achou</h2>
+    <div class="cards">
+      <div class="card"><div class="ico">📲</div><h3>1. Atualize</h3><p>Instale a versão 1.9.10 pela Play Store. Atualizar não apaga seus dados.</p></div>
+      <div class="card"><div class="ico">🩺</div><h3>2. Use de verdade</h3><p>Seus compromissos, remédios e água. Não precisa ser tudo: o que fizer sentido para você.</p></div>
+      <div class="card"><div class="ico">💬</div><h3>3. Dê retorno</h3><p>Uma frase basta: o que foi fácil, onde travou, o que mudaria.</p></div>
+    </div>
+    <p style="margin-top:22px">Cada retorno vira melhoria, e <strong class="teal">é isso que o Google avalia</strong> para liberar a loja.
+      Mantenha o aplicativo instalado durante os 14 dias.</p>
+  </section>
+
+  <section class="blk" id="atualizar">
+    <div class="kicker">Passo a passo</div>
+    <h2>Como atualizar para a versão 1.9.10</h2>
+    <ol class="steps">
+      <li>No celular, abra a <strong>Play Store</strong> e toque na <strong>sua foto</strong>, no canto de cima.</li>
+      <li>Toque em <strong>Gerenciar apps e dispositivo</strong> → <strong>Atualizações disponíveis</strong>.</li>
+      <li>Encontre <strong>CheckupPessoal</strong> e toque em <strong>Atualizar</strong>.</li>
+      <li>Para conferir: aba <strong>Sistema</strong> → quadro <strong>Sobre</strong>, no fim da tela → deve mostrar <strong class="teal">v1.9.10</strong>.</li>
+    </ol>
+    <div class="box">
+      <p><strong>Não apareceu a atualização?</strong> Abra este link <strong>no celular</strong> e toque em <strong>Baixar no Google Play</strong> ou <strong>Atualizar</strong>:</p>
+      <a class="link" href="https://play.google.com/apps/testing/com.checkuppessoal.app">play.google.com/apps/testing/com.checkuppessoal.app</a>
+      <p>Use a mesma conta Google do celular. Se você tinha desinstalado, o caminho é o mesmo: “Tornar-se um testador” e depois instalar.</p>
+    </div>
+    <div class="aviso">
+      <p><strong class="amber">Instalou pelo site, e não pela Play Store?</strong> Essa instalação funciona, mas <strong>não conta</strong> para o Google, e a Play Store não consegue atualizá-la. Para trocar sem perder nada:</p>
+      <ol class="steps" style="margin-bottom:0">
+        <li>Aba <strong>Docs</strong> → <strong>Gerar Backup</strong>. Guarde o arquivo (Drive, e-mail…).</li>
+        <li><strong>Desinstale</strong> o CheckupPessoal.</li>
+        <li>Instale pelo <strong>link do teste</strong>, acima, na Play Store.</li>
+        <li>Aba <strong>Docs</strong> → <strong>Restaurar Dados</strong> → escolha o arquivo do backup.</li>
+      </ol>
+      <p style="margin:0">Na dúvida, me chame antes de desinstalar. Faço o passo a passo com você.</p>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="kicker">O que mudou</div>
+    <h2>Nova tela inicial: cinco abas no rodapé</h2>
+    <p>Tudo a um toque. O ícone aceso mostra em que aba você está.</p>
+    <div class="tabs">
+      <div class="tab"><div class="ico">📊</div><h3 class="teal">Controle</h3><p>O dia a dia: agendados, a agendar, realizados, remédios, água e atividades. Abaixo, os lembretes.</p></div>
+      <div class="tab"><div class="ico">👤</div><h3 class="amber">Cadastro</h3><p>Perfil, Médicos, Clínicas e Laboratórios, Especialidades.</p></div>
+      <div class="tab"><div class="ico">📈</div><h3 style="color:var(--primary)">Consolidado</h3><p>Os gráficos do ano: consultas, exames e atividades físicas por mês.</p></div>
+      <div class="tab"><div class="ico">📁</div><h3 style="color:var(--blue)">Docs</h3><p>Documentos, Histórico, Gerar Backup e Restaurar Dados.</p></div>
+      <div class="tab"><div class="ico">⚙️</div><h3 style="color:var(--purple)">Sistema</h3><p>As configurações, direto. No fim, o quadro Sobre, com a versão.</p></div>
+    </div>
+    <p style="margin-top:20px">Cada tela aberta por um quadro tem <strong>o mesmo nome do quadro</strong>, e a <strong>seta no alto</strong> leva de volta.</p>
+  </section>
+
+  <section class="blk">
+    <div class="feature">
+      <div class="media"><img class="phone" src="assets/img/app-01-controle.jpeg" alt="Aba Controle" loading="lazy"></div>
+      <div>
+        <div class="kicker">Aba Controle</div>
+        <h2>O seu dia a dia numa tela só</h2>
+        <ul>
+          <li><strong>Agendados</strong> e <strong>A agendar</strong>: o que está marcado e o que falta marcar.</li>
+          <li><strong>Realizados</strong>: o que você já fez. Substituiu o antigo quadro “Agenda”.</li>
+          <li><strong>Remédios</strong>, <strong>Hidratação</strong> e <strong>Atividades Físicas</strong>.</li>
+          <li>Abaixo dos quadros, uma <strong>linha por compromisso pendente</strong>. Os <strong class="red">atrasados aparecem primeiro, em vermelho</strong>. Toque para abrir.</li>
+          <li>Botão <strong class="teal">+</strong> para um compromisso novo.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="feature rev">
+      <div>
+        <div class="kicker">Abas Cadastro e Consolidado</div>
+        <h2>Quadros grandes, fáceis de tocar</h2>
+        <ul>
+          <li><strong class="amber">Perfil</strong> é o primeiro quadro do Cadastro: seus dados, peso e gênero (usados na meta de água).</li>
+          <li>Médicos, Clínicas e Laboratórios e Especialidades, <strong>um por linha</strong>, com letra maior.</li>
+          <li>No <strong>Consolidado</strong>, os gráficos ocupam a tela toda: consultas e exames (cores separadas) e atividades físicas por mês.</li>
+        </ul>
+      </div>
+      <div class="media phones">
+        <img class="phone" src="assets/img/app-02-cadastro.jpeg" alt="Aba Cadastro" loading="lazy">
+        <img class="phone" src="assets/img/app-03-consolidado.jpeg" alt="Aba Consolidado" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="feature">
+      <div class="media phones">
+        <img class="phone" src="assets/img/app-04-docs.jpeg" alt="Aba Docs" loading="lazy">
+        <img class="phone" src="assets/img/app-05-sistema.jpeg" alt="Aba Sistema" loading="lazy">
+      </div>
+      <div>
+        <div class="kicker">Abas Docs e Sistema</div>
+        <h2>Documentos e segurança dos seus dados</h2>
+        <ul>
+          <li><strong>Docs</strong> reúne Documentos, Histórico e o <strong>backup</strong>: Gerar Backup e Restaurar Dados.</li>
+          <li>Restaurar <strong class="amber">substitui tudo</strong> e sempre pede confirmação antes.</li>
+          <li><strong>Sistema</strong> abre direto nas configurações: agenda, lembretes de água, alertas, atividades e segurança (PIN e biometria).</li>
+          <li>No fim do Sistema, o quadro <strong>Sobre</strong> mostra a versão e o histórico de novidades.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="feature rev">
+      <div>
+        <div class="kicker">Telas internas</div>
+        <h2>Tocou no quadro, abriu a lista certa</h2>
+        <ul>
+          <li>A tela tem <strong>o nome do quadro</strong>: Agendados, A agendar, Realizados, Remédios, Atividades Físicas…</li>
+          <li><strong>Agendados</strong> e <strong>A agendar</strong>: do mais próximo de hoje para o mais distante, com os atrasados no topo.</li>
+          <li><strong>Realizados</strong>: do mais recente para o mais antigo.</li>
+          <li>A <strong>seta no alto, à esquerda</strong>, volta para a aba de onde você veio.</li>
+        </ul>
+      </div>
+      <div class="media phones">
+        <img class="phone" src="assets/img/app-06-agendados.jpeg" alt="Tela Agendados" loading="lazy">
+        <img class="phone" src="assets/img/app-07-remedios.jpeg" alt="Tela Remédios" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="kicker">Sugestão de roteiro para os 14 dias</div>
+    <h2>Cinco coisas para experimentar</h2>
+    <ol class="steps">
+      <li><strong>Cadastro</strong> → Médicos: cadastre um médico seu. Depois, no <strong>Controle</strong>, toque em <strong class="teal">+</strong> e marque uma consulta ou exame.</li>
+      <li>Quando o compromisso acontecer, abra e marque como <strong>Realizado</strong>. Se quiser, anexe a receita ou o resultado.</li>
+      <li><strong>Remédios</strong>: cadastre um remédio ou vitamina e use o botão <strong>Tomar</strong> nos horários.</li>
+      <li><strong>Hidratação</strong>: registre os copos de água do dia.</li>
+      <li><strong>Docs</strong> → <strong>Gerar Backup</strong>: guarde uma cópia dos seus dados.</li>
+    </ol>
+  </section>
+
+  <section class="blk">
+    <div class="kicker">Seu retorno</div>
+    <h2>Três perguntas, uma frase cada</h2>
+    <div class="cards">
+      <div class="card"><p class="q teal">O que foi fácil?</p></div>
+      <div class="card"><p class="q amber">Onde você travou?</p></div>
+      <div class="card"><p class="q" style="color:var(--purple)">O que você mudaria?</p></div>
+    </div>
+    <p style="margin-top:22px">Responda pelo <strong>WhatsApp</strong>, pelo e-mail do convite ou escreva para
+      <a href="mailto:ptgsouza@hotmail.com">ptgsouza@hotmail.com</a>.</p>
+    <p>Obrigado por fazer parte disso. Falta pouco para o CheckupPessoal estar na Play Store para todo mundo.</p>
+    <p><strong>— Paulo de Tarso</strong></p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-in">
+    <span>© 2026 PTGSouza Administração e Consultoria</span>
+    <span><a href="index.html">Início</a><a href="privacidade.html">Privacidade</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
